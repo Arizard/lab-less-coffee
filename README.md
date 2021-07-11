@@ -1,4 +1,4 @@
 # The Less.Coffee Lab
 
-This monorepo is where I will keep all of my
+This monorepo is where I keep all of my
 go projects.

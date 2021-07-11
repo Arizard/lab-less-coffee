@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: golang:1.16.5-alpine3.14
+    commands:
+      - go test cmd/svc-link-shortener/
