@@ -96,3 +96,73 @@ func TestOverlap(t *testing.T) {
 		})
 	}
 }
+
+func TestSplit(t *testing.T) {
+	bBig := Block{
+		Start: newTime(9, 0, 0),
+		End:   newTime(17, 0, 0),
+	}
+	bSml := Block{
+		Start: newTime(12, 0, 0),
+		End:   newTime(13, 0, 0),
+	}
+	want := [2]Block{
+		{
+			Start: bBig.Start,
+			End:   bSml.Start,
+		},
+		{
+			Start: bSml.End,
+			End:   bBig.End,
+		},
+	}
+	t.Run("Split", func(t *testing.T) {
+		if got := Split(bBig, bSml); !reflect.DeepEqual(got, want) {
+			t.Errorf("Split() = %v, want %v", got, want)
+		}
+	})
+}
+
+func TestMultiSplit(t *testing.T) {
+	bBig := Block{
+		Start: newTime(9, 0, 0),
+		End:   newTime(17, 0, 0),
+	}
+	bSmls := []Block{
+		{
+			Start: newTime(10, 0, 0),
+			End:   newTime(10, 30, 0),
+		},
+		{
+			Start: newTime(12, 0, 0),
+			End:   newTime(12, 30, 0),
+		},
+		{
+			Start: newTime(15, 0, 0),
+			End:   newTime(15, 30, 0),
+		},
+	}
+	want := []Block{
+		{
+			Start: newTime(9, 0, 0),
+			End:   newTime(10, 0, 0),
+		},
+		{
+			Start: newTime(10, 30, 0),
+			End:   newTime(12, 0, 0),
+		},
+		{
+			Start: newTime(12, 30, 0),
+			End:   newTime(15, 0, 0),
+		},
+		{
+			Start: newTime(15, 30, 0),
+			End:   newTime(17, 0, 0),
+		},
+	}
+	t.Run("Split", func(t *testing.T) {
+		if got := MultiSplit(bBig, bSmls); !reflect.DeepEqual(got, want) {
+			t.Errorf("MultiSplit() = %v, want %v", got, want)
+		}
+	})
+}

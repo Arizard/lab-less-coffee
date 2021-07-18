@@ -40,3 +40,9 @@ func DurationFromTo(from time.Duration, to time.Duration) PayRuleFunc {
 		FirstDuration(to-from),
 	)
 }
+
+func All() PayRuleFunc {
+	return func(shift Block, focusStart time.Time, focusEnd time.Time) (result Block) {
+		return Overlap(shift, Block{Start: focusStart, End: focusEnd})
+	}
+}
