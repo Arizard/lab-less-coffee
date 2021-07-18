@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/arizard/lab-less-coffee/cmd/shift-pay/spc"
+	"github.com/arizard/lab-less-coffee/pkg/spc"
 )
 
 func main() {

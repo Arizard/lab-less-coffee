@@ -6,3 +6,7 @@
     to create a pay rule.
 * Pay Rate: A Pay Rule which is paid at a specified rate.
 * Block: A contiguous "block" of time.
+
+## TODO
+
+* API Endpoints - Split Timesheet API 🥐
