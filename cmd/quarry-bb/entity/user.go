@@ -61,6 +61,10 @@ type UserService struct {
 	repo UserRepository
 }
 
+func NewUserService(repo UserRepository) *UserService {
+	return &UserService{repo: repo}
+}
+
 func (svc *UserService) UserRepository() (repo UserRepository, err error) {
 	if svc.repo == nil {
 		return nil, errors.New("repo is nil")

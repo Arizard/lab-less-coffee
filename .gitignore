@@ -1,2 +1,10 @@
 .idea
 .idea/*
+
+go.sum
+
+bin
+bin/*
+
+infra/data/*
+
