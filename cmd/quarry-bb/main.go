@@ -7,10 +7,11 @@ import (
 )
 
 func main() {
+	userRepo := infra.NewMySQLUserRepository()
 	server := infra.NewGinServer()
 	core := core.Core{
 		Server:      server,
-		UserService: entity.NewUserService(infra.NewJSONUserRepository("./infra/data/user.json")),
+		UserService: entity.NewUserService(userRepo),
 	}
 
 	core.Start()

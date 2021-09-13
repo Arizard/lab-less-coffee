@@ -12,13 +12,13 @@ import (
 type UserUID string
 
 type User struct {
-	FullName     string
-	ShortName    string
-	UID          UserUID
-	PasswordHash string
-	Login        string
-	Verified     bool
-	Created      time.Time
+	FullName     string    `json:"full_name"`
+	ShortName    string    `json:"short_name"`
+	UID          UserUID   `json:"uid"`
+	PasswordHash string    `json:"-"`
+	Login        string    `json:"login"`
+	Verified     bool      `json:"verified"`
+	Created      time.Time `json:"created"`
 }
 
 type UserRegistration struct {
@@ -65,11 +65,8 @@ func NewUserService(repo UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (svc *UserService) UserRepository() (repo UserRepository, err error) {
-	if svc.repo == nil {
-		return nil, errors.New("repo is nil")
-	}
-	return svc.repo, nil
+func (svc *UserService) UserRepository() UserRepository {
+	return svc.repo
 }
 
 func (svc *UserService) Register(reg UserRegistration) (createdUser *User, err error) {
@@ -78,9 +75,15 @@ func (svc *UserService) Register(reg UserRegistration) (createdUser *User, err e
 		return nil, errors.New(fmt.Sprintf("user with login %s already exists", reg.Login))
 	}
 
+	if err != nil {
+		if !errors.Is(err, ErrorNotFound) {
+			return nil, fmt.Errorf("could not query existing employee: %w", err)
+		}
+	}
+
 	hash, err := NewHashedPassword(reg.Password)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("could not hash password"))
+		return nil, fmt.Errorf("could not hash password: %w", err)
 	}
 
 	user := User{
@@ -95,7 +98,7 @@ func (svc *UserService) Register(reg UserRegistration) (createdUser *User, err e
 	createdUser, err = svc.repo.Create(user)
 
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("could not register new user: %s", err))
+		return nil, fmt.Errorf("could not register new user: %w", err)
 	}
 
 	return createdUser, nil
@@ -104,10 +107,10 @@ func (svc *UserService) Register(reg UserRegistration) (createdUser *User, err e
 func (svc *UserService) NewSession(login string, password string) (session *UserSession, err error) {
 	user, err := svc.repo.GetByLogin(login)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("could not create new session: %s", err))
+		return nil, fmt.Errorf("could not create new session: %s", err)
 	}
 	if !ComparePassword(password, user.PasswordHash) {
-		return nil, errors.New("could not log in")
+		return nil, errors.New("could not find user with those credentials")
 	}
 	return &UserSession{
 		User:        user.UID,

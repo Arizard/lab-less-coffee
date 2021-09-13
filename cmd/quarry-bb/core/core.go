@@ -21,3 +21,15 @@ func (core *Core) RegisterUser(login string, password string) (user *entity.User
 
 	return user, err
 }
+
+func (core *Core) GetUserByLogin(login string) (*entity.User, error) {
+	repo := core.UserService.UserRepository()
+
+	return repo.GetByLogin(login)
+}
+
+func (core *Core) GetUserByUID(uid entity.UserUID) (*entity.User, error) {
+	repo := core.UserService.UserRepository()
+
+	return repo.Get(uid)
+}

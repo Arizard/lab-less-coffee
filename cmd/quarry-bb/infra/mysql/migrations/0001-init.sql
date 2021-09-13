@@ -8,6 +8,6 @@ CREATE TABLE user (
   password_hash VARCHAR(255) NOT NULL, 
   login VARCHAR(255) NOT NULL, 
   verified BOOLEAN, 
-  created TIMESTAMP, 
+  created INT(64), 
   PRIMARY KEY (id)
 );
