@@ -114,7 +114,7 @@ func (svc *UserService) NewSession(login string, password string) (session *User
 	}
 	return &UserSession{
 		User:        user.UID,
-		AccessToken: []byte("magic"),
+		AccessToken: "magic",
 		Created:     time.Now(),
 	}, nil
 }

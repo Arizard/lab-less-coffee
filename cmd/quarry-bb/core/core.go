@@ -3,8 +3,9 @@ package core
 import "github.com/arizard/lab-less-coffee/cmd/quarry-bb/entity"
 
 type Core struct {
-	UserService *entity.UserService
-	Server      Server
+	UserService        *entity.UserService
+	Server             Server
+	UserSessionManager entity.UserSessionManager
 }
 
 func (core *Core) Start() {

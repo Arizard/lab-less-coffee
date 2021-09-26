@@ -8,10 +8,12 @@ import (
 
 func main() {
 	userRepo := infra.NewMySQLUserRepository()
+	userSessionManager := infra.NewJWTUserSessionManager()
 	server := infra.NewGinServer()
 	core := core.Core{
-		Server:      server,
-		UserService: entity.NewUserService(userRepo),
+		Server:             server,
+		UserService:        entity.NewUserService(userRepo),
+		UserSessionManager: userSessionManager,
 	}
 
 	core.Start()
